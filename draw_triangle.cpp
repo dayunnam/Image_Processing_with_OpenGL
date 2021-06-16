@@ -1,3 +1,4 @@
+
 #include <cstdio>
 #include <clocale>
 #include <cstring>
@@ -16,30 +17,27 @@ GLuint VAO, VBO, shader;
 
 static const char* vShader = R"(
 #version 330 core
-layout (location = 0) in vec3 aPos; // 위치 변수는 attribute position 0 을 가짐 
-layout (location = 1) in vec3 aColor; // 컬러 변수는 attribute position 1 을 가짐 
-
-out vec3 ourColor; // 컬러를 fragment shader 로 출력
+layout (location = 0) in vec3 aPos;   // 위치 변수는 attribute position 0을 가집니다.
+layout (location = 1) in vec3 aColor; // 컬러 변수는 attribute position 1을 가집니다.
+  
+out vec3 ourColor; // 컬러를 fragment shader로 출력
 
 void main()
 {
-	// 입력값을 처리하고 그래픽 작업을 함
-	gl_Position = vec4(aPos, 1.0); //vec4 의 생성자에 vec3 를 직접적으로 줌
-
-	// 처리된 것을 출력 변수로 출력
-	ourColor = aColor // 출력 변수에 짙은 빨간색을 설정
-}
+    gl_Position = vec4(aPos, 1.0);
+    ourColor = aColor; // vertex data로부터 가져오 컬러 입력을 ourColor에 설정
+}      
 )";
 
 
 static const char* fShader = R"(
 #version 330 core
-out vec4 FragColor;
+out vec4 FragColor;  
 in vec3 ourColor;
-
+  
 void main()
 {
-FragColor = vec4(outColor, 1.0);
+    FragColor = vec4(ourColor, 1.0);
 }
 )";
 
@@ -76,7 +74,7 @@ void main()
 
 void AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType)
 {
-	// 쉐이더 생성
+	// Creating shader
 	GLuint theShader = glCreateShader(shaderType);
 
 	// 쉐이더 코드를 저장할 배열 생성
@@ -106,12 +104,13 @@ void AddShader(GLuint theProgram, const char* shaderCode, GLenum shaderType)
 		return;
 	}
 
-	// 쉐이더 프로그램에 쉐이더를 등록합니다.
+	// The shaders are assigned to the program and an executable is generated
 	glAttachShader(theProgram, theShader);
 }
 
 void CompileShader()
 {
+	//Creation of Shader Programs in OpenGL
 	shader = glCreateProgram();
 
 	if (shader == NULL)
@@ -155,11 +154,11 @@ void CreateTriangle()
 	-0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 1.0f // 좌측 하단
 	//-0.5f,  0.5f, 0.0f   // 좌측 상단
 	};
-	/*
-	unsigned int indices[] = {  // 0부터 시작한다는 것을 명심하세요!
-		0, 1, 3,   // 첫 번째 삼각형
-		1, 2, 3    // 두 번째 삼각형
-	};*/
+	
+	//unsigned int indices[] = {  // 0부터 시작한다는 것을 명심하세요!
+	//	0, 1, 3,   // 첫 번째 삼각형
+	//	1, 2, 3    // 두 번째 삼각형
+	//};
 
 
 	// OpenGL 정점 배열 생성기를 사용해서 VAO를 생성
@@ -178,10 +177,13 @@ void CreateTriangle()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	// VAO에 이 VAO를 어떻게 해석해야 할 지 알려줍니다.
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6* sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);// VAO 사용 허용
 
-	// VAO 사용 허용
-	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6* sizeof(float), (void*)(3* sizeof(float)));
+	glEnableVertexAttribArray(1);// VAO 사용 허용
+	
+	
 	// VBO 수정 종료 및 연결 초기화
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -288,5 +290,6 @@ int main() {
 	}
 	return 0;
 }
+
 
 
