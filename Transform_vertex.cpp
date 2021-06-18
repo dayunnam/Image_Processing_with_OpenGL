@@ -1,4 +1,6 @@
 
+// reference : https://github.com/opengl-tutorials/ogl 
+
 #include <stdio.h>
 #include <string>
 #include <vector>
@@ -145,7 +147,7 @@ int main(void) {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL 
 
 	// Open a window and create its OpenGL context
-	window = glfwCreateWindow(1024, 768, "Tutorial 03 - Matrices", NULL, NULL);
+	window = glfwCreateWindow(1024, 768, Transform vertex", NULL, NULL);
 	if (window == NULL) {
 		fprintf(stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n");
 		getchar();
